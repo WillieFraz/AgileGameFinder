@@ -1,6 +1,6 @@
-using GameFinder.Data;
 using GameFinder.Data.Entities;
-using Microsoft.EntityFrameworkCore;
+using GameFinder.Model;
+using GameFinder.Data;
 
 namespace GameFinder.Service.GameService;
 
@@ -13,14 +13,25 @@ namespace GameFinder.Service.GameService;
             _dbContext = dbContext; 
         }
 
-        public async Task<bool> DeleteGameById(int gameId)
-        {
-            Game? gameEntity = await _dbContext.Games.FindAsync(gameId);
-            if (gameEntity == null)
-                return false;
-            
+        public async Task<bool> UpdateGameItemAsync(GameUpdate request) {
+            Game? game = await _dbContext.Games.FindAsync(request.Id);
+        
+            game.Title = request.Title;
+            game.GameSystem = request.GameSystem;
+            game.Genre = request.Genre;
 
-            _dbContext.Games.Remove(gameEntity);
             return await _dbContext.SaveChangesAsync() == 1;
         }
-    }
+
+        public async Task<bool> DeleteGameByIdAsync(int gameId)
+        {
+            Game? game = await _dbContext.Games.FindAsync(gameId);
+            if (game is null)
+                return false;
+        
+            _dbContext.Games.Remove(game);
+            return await _dbContext.SaveChangesAsync() == 1;
+        }
+
+   
+}
