@@ -11,6 +11,8 @@ public class ApplicationDbContext : IdentityDbContext<User, IdentityRole<int>, i
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options){} 
 
     public DbSet<Game> Games { get; set; } = null!;
+    public DbSet<GameSystem> GameSystems { get; set; } = null!;
+    public DbSet<Genre> Genres { get; set; } = null!;
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
