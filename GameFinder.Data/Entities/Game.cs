@@ -15,5 +15,5 @@ public class Game
     public string GameSystem { get; set; } = string.Empty;
     
     [Required]
-    public string Genre { get; set; } = string.Empty;
+    public string Genre { get; set; } = string.Empty; 
 }
