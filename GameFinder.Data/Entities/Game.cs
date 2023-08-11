@@ -18,5 +18,6 @@ public class Game
 
     [ForeignKey(nameof(Genre))]
     public int GenreId { get; set; }
+    
     public Genre Genre { get; set; } = new();
 }
