@@ -11,9 +11,12 @@ public class Game
     [Required, MinLength(1), MaxLength(100)]
     public string Title { get; set; } = string.Empty;
 
-    [Required]
-    public string GameSystem { get; set; } = string.Empty;
+    [ForeignKey(nameof(GameSystem))]
+    public int GameSystemId { get; set; } 
+    
+    public GameSystem GameSystem { get; set; } = new();
 
-    [Required]
-    public string Genre { get; set; } = string.Empty; 
+    [ForeignKey(nameof(Genre))]
+    public int GenreId { get; set; }
+    public Genre Genre { get; set; } = new();
 }
