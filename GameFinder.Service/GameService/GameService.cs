@@ -15,16 +15,12 @@ namespace GameFinder.Service.GameService;
 
         public async Task<bool> DeleteGameById(int gameId)
         {
-        Game? gameEntity = await _dbContext.Games.FindAsync(gameId);
+            Game? gameEntity = await _dbContext.Games.FindAsync(gameId);
             if (gameEntity == null)
-            {
                 return false;
-            }
             
-            if (gameEntity?.OwnerId != _userId)
-                return false;
 
-        game = _dbContext.Games.Remove(gameEntity);
+            _dbContext.Games.Remove(gameEntity);
             return await _dbContext.SaveChangesAsync() == 1;
         }
     }
