@@ -11,4 +11,17 @@ public class GameController : ControllerBase
     {
         _gameService = gameService;
     }
+
+    [HttpGet("{Id:int}")]
+    public async Task<IActionResult> GetGameByIdAsync([FromRoute] int Id) //(int id)?
+    {
+        var game = await _gameService.GetGameByIdAsync(Id);
+
+        if (game == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(game);
+    }
 }
