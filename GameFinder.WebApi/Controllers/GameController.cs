@@ -14,11 +14,26 @@ public class GameController : ControllerBase
         _gameService = gameService;
     }
 
+
+    [HttpGet("{Id:int}")]
+    public async Task<IActionResult> GetGameByIdAsync([FromRoute] int Id) //(int id)?
+    {
+        var game = await _gameService.GetGameByIdAsync(Id);
+
+        if (game == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(game);
+   }
+   
     [HttpPut]
     public async Task<IActionResult> UpdateGameItemAsync([FromBody] GameUpdate request) {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         return (await _gameService.UpdateGameItemAsync(request)) ? Ok("updated") : BadRequest("Update Fail");
+
     }
 
     [HttpDelete("{gameId:int}")]

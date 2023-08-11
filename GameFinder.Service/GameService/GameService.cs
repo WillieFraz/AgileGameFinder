@@ -4,34 +4,48 @@ using GameFinder.Data;
 
 namespace GameFinder.Service.GameService;
 
-    public class GameService : IGameService
+public class GameService : IGameService
+{
+    private readonly ApplicationDbContext _dbContext;
+
+    public GameService(ApplicationDbContext dbContext)
     {
-        private readonly ApplicationDbContext _dbContext;
+        _dbContext = dbContext;
+    }
 
-        public GameService (ApplicationDbContext dbContext) 
+    public async Task<GameDetail?> GetGameByIdAsync(int Id) //GameEntity
+    {
+        Game? game = await _dbContext.Games.FindAsync(Id);
+        if (game is null)
+            return null;
+        return new GameDetail()
         {
-            _dbContext = dbContext; 
-        }
 
-        public async Task<bool> UpdateGameItemAsync(GameUpdate request) {
-            Game? game = await _dbContext.Games.FindAsync(request.Id);
-        
-            game.Title = request.Title;
-            game.GameSystem = request.GameSystem;
-            game.Genre = request.Genre;
+            //  Id = game.Id,
+            Title = game.Title,
+            GameSystem = game.GameSystem,
+            Genre = game.Genre
+        };
+    }
 
-            return await _dbContext.SaveChangesAsync() == 1;
-        }
+    public async Task<bool> UpdateGameItemAsync(GameUpdate request)
+    {
+        Game? game = await _dbContext.Games.FindAsync(request.Id);
 
-        public async Task<bool> DeleteGameByIdAsync(int gameId)
-        {
-            Game? game = await _dbContext.Games.FindAsync(gameId);
-            if (game is null)
-                return false;
-        
-            _dbContext.Games.Remove(game);
-            return await _dbContext.SaveChangesAsync() == 1;
-        }
+        game.Title = request.Title;
+        game.GameSystem = request.GameSystem;
+        game.Genre = request.Genre;
 
-   
+        return await _dbContext.SaveChangesAsync() == 1;
+    }
+
+    public async Task<bool> DeleteGameByIdAsync(int gameId)
+    {
+        Game? game = await _dbContext.Games.FindAsync(gameId);
+        if (game is null)
+            return false;
+
+        _dbContext.Games.Remove(game);
+        return await _dbContext.SaveChangesAsync() == 1;
+    }
 }
