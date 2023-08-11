@@ -11,5 +11,5 @@ public interface IGameService
 
     Task<bool> UpdateGameItemAsync(GameUpdate update);
 
-
+    Task<bool> AddGameAsync(GameCreate request);
 }

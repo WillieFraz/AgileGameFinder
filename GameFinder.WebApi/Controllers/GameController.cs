@@ -43,4 +43,14 @@ public class GameController : ControllerBase
             ? Ok($"Game {gameId} was deleted successfully.")
             : BadRequest($"Game {gameId} could not be deleted.");
     }
+
+    [HttpPost]
+    public async Task<IActionResult> AddGameAsync([FromBody] GameCreate request)
+    {
+        if(!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+        return (await _gameService.AddGameAsync(request)) ? Ok("added") : BadRequest("add failed");
+    }
 }
